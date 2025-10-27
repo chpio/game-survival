@@ -3,15 +3,12 @@ name = "survival"
 version = "0.0.0"
 edition = "2024"
 
-[features]
-default = ["atlas"]
-atlas = ["bevy_ecs_tilemap/atlas"]
-
 [dependencies]
-bevy = { version = "0.17", default-features = true, features = ["dynamic_linking"] }
-bevy_ecs_tilemap = "0.17"
-thiserror = "2"
-tiled = { version = "0.14", default-features = false }
+bevy = { version = "0.16", default-features = true, features = [
+    "dynamic_linking",
+    "file_watcher",
+] }
+bevy_ecs_tiled = "0.9"
 
 [profile.dev]
 opt-level = 1
