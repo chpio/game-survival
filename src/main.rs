@@ -20,7 +20,10 @@ fn startup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
         Camera2d,
         Projection::Orthographic(OrthographicProjection {
-            scale: 0.25,
+            scaling_mode: bevy::camera::ScalingMode::AutoMax {
+                max_width: 500.,
+                max_height: 500.,
+            },
             ..OrthographicProjection::default_2d()
         }),
     ));
