@@ -4,15 +4,15 @@ version = "0.0.0"
 edition = "2024"
 
 [dependencies]
-avian2d = "0.4"
-bevy = { version = "0.17", default-features = true, features = [
+avian2d = "0.3"
+bevy = { version = "0.16", default-features = true, features = [
     "dynamic_linking",
     "file_watcher",
 ] }
-#bevy_ecs_tiled = { version = "0.9", features = ["avian"] }
 [dependencies.bevy_ecs_tiled]
-git = "https://github.com/adrien-bon/bevy_ecs_tiled.git"
-branch = "dev"
+version = "0.9"
+# git = "https://github.com/adrien-bon/bevy_ecs_tiled.git"
+# branch = "dev"
 features = ["avian"]
 
 [profile.dev]

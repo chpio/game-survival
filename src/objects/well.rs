@@ -7,17 +7,17 @@ use crate::objects::player;
 pub struct Well;
 
 fn player_on_well(
-    mut collision_reader: MessageReader<CollisionStart>,
+    mut collision_reader: EventReader<CollisionStarted>,
     q_well: Query<Entity, With<Well>>,
     q_player: Query<Entity, With<player::Player>>,
 ) {
     for event in collision_reader
         .read()
-        .filter(|event| q_well.contains(event.collider1) && q_player.contains(event.collider2))
+        .filter(|event| q_well.contains(event.0) && q_player.contains(event.1))
     {
         println!(
             "{} and {} started colliding",
-            event.collider1, event.collider2
+            event.0, event.1
         );
     }
 }

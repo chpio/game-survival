@@ -41,7 +41,7 @@ fn startup(mut commands: Commands, asset_server: Res<AssetServer>) {
         // .observe(|_: On<TiledEvent<MapCreated>>, mut commands: Commands| {
         // })
         .observe(
-            |trigger: On<TiledEvent<ColliderCreated>>,
+            |trigger: Trigger<TiledEvent<ColliderCreated>>,
              mut commands: Commands,
              assets: Res<Assets<TiledMapAsset>>| {
                 let mut entity = commands.entity(trigger.event().origin);
