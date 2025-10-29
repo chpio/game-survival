@@ -10,6 +10,7 @@ fn main() {
         .add_plugins(TiledPlugin::default())
         .add_systems(Startup, startup)
         .add_systems(Update, update_camera_position)
+        .insert_resource(Gravity::ZERO)
         .add_plugins(TiledPhysicsPlugin::<TiledPhysicsAvianBackend>::default())
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
         .add_plugins(PhysicsDebugPlugin::default())
