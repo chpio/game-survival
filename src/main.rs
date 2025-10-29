@@ -17,7 +17,13 @@ fn main() {
 }
 
 fn startup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn(Camera2d);
+    commands.spawn((
+        Camera2d,
+        Projection::Orthographic(OrthographicProjection {
+            scale: 0.25,
+            ..OrthographicProjection::default_2d()
+        }),
+    ));
 
     commands.spawn((
         RigidBody::Dynamic,
