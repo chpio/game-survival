@@ -9,6 +9,7 @@ fn main() {
         .add_plugins(DefaultPlugins.build().set(ImagePlugin::default_nearest()))
         .add_plugins(TiledPlugin::default())
         .add_systems(Startup, startup)
+        .add_systems(Update, update_camera_position)
         .add_plugins(TiledPhysicsPlugin::<TiledPhysicsAvianBackend>::default())
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
         .add_plugins(PhysicsDebugPlugin::default())
@@ -72,11 +73,18 @@ fn startup(mut commands: Commands, asset_server: Res<AssetServer>) {
 
                     match user_type.as_ref().map(String::as_str) {
                         Some("well") => {
-                            entity.insert((objects::well::Well, Sensor, CollisionEventsEnabled));
+                            collider.insert((objects::well::Well, Sensor, CollisionEventsEnabled));
                         }
                         _ => {}
                     }
                 };
             },
         );
+}
+
+fn update_camera_position(
+    player: Single<&Transform, (With<objects::player::Player>, Without<Camera>)>,
+    mut camera: Single<&mut Transform, With<Camera>>,
+) {
+    camera.translation = player.translation;
 }
