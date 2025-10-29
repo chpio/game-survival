@@ -48,21 +48,16 @@ fn startup(mut commands: Commands, asset_server: Res<AssetServer>) {
             },
             TilemapAnchor::Center,
         ))
-        // // Wait for map loading to complete and spawn a simple player-controlled object
-        // .observe(|_: On<TiledEvent<MapCreated>>, mut commands: Commands| {
-        // })
         .observe(
-            |trigger: On<TiledEvent<ColliderCreated>>,
+            |collider_created: On<TiledEvent<ColliderCreated>>,
              mut commands: Commands,
              assets: Res<Assets<TiledMapAsset>>| {
-                let mut entity = commands.entity(trigger.event().origin);
-
                 // Automatically insert a `RigidBody::Static` component on all the colliders entities from the map
-                entity.insert(RigidBody::Static);
+                commands
+                    .entity(*collider_created.event().event.collider_of)
+                    .insert(RigidBody::Static);
 
-                if let Some(obj) = trigger.event().get_object(&assets) {
-                    println!("obj: {obj:?}");
-
+                if let Some(obj) = collider_created.event().get_object(&assets) {
                     let user_type = Some(obj.user_type.clone())
                         .filter(|t| !t.is_empty())
                         .or_else(|| {
@@ -71,6 +66,8 @@ fn startup(mut commands: Commands, asset_server: Res<AssetServer>) {
                                 .and_then(|tile| tile.user_type.clone())
                                 .filter(|t| !t.is_empty())
                         });
+
+                    let mut collider = commands.entity(collider_created.event().origin);
 
                     match user_type.as_ref().map(String::as_str) {
                         Some("well") => {
