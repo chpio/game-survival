@@ -1,15 +1,22 @@
 use avian2d::prelude::*;
-use bevy::prelude::*;
+use bevy::{dev_tools::fps_overlay, prelude::*};
 use bevy_ecs_tiled::prelude::*;
+use std::time::Duration;
 
 mod objects;
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins.build().set(ImagePlugin::default_nearest()))
+        .add_plugins(fps_overlay::FpsOverlayPlugin {
+            config: fps_overlay::FpsOverlayConfig {
+                refresh_interval: Duration::from_millis(500),
+                ..default()
+            },
+        })
         .add_plugins(TiledPlugin::default())
         .add_systems(Startup, startup)
-        .add_systems(Update, update_camera_position)
+        .add_systems(Update, (update_camera_position, toggle_fps))
         .insert_resource(Gravity::ZERO)
         .add_plugins(TiledPhysicsPlugin::<TiledPhysicsAvianBackend>::default())
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
@@ -85,4 +92,15 @@ fn update_camera_position(
     mut camera: Single<&mut Transform, With<Camera>>,
 ) {
     camera.translation = player.translation;
+}
+
+fn toggle_fps(
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    mut fps_overlay: ResMut<fps_overlay::FpsOverlayConfig>,
+) {
+    if keyboard_input.just_pressed(KeyCode::KeyP) {
+        let enabled = !fps_overlay.enabled;
+        fps_overlay.enabled = enabled;
+        fps_overlay.frame_time_graph_config.enabled = enabled;
+    }
 }
