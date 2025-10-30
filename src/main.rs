@@ -106,7 +106,8 @@ fn update_camera_position(
     player: Single<&Transform, (With<objects::player::Player>, Without<Camera>)>,
     mut camera: Single<&mut Transform, With<Camera>>,
 ) {
-    camera.translation = player.translation;
+    // keep camera z-coordinate unchanged
+    camera.translation = player.translation.with_z(camera.translation.z);
 }
 
 fn toggle_fps(
