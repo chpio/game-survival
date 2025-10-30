@@ -1,5 +1,5 @@
 use avian2d::prelude::*;
-use bevy::{dev_tools::fps_overlay, prelude::*, window::PresentMode};
+use bevy::{dev_tools::fps_overlay, prelude::*, window};
 use bevy_ecs_tiled::prelude::*;
 use std::time::Duration;
 
@@ -12,7 +12,8 @@ fn main() {
                 .build()
                 .set(WindowPlugin {
                     primary_window: Some(Window {
-                        present_mode: PresentMode::Fifo,
+                        mode: window::WindowMode::Windowed,
+                        present_mode: window::PresentMode::Fifo,
                         ..default()
                     }),
                     ..default()
@@ -27,7 +28,10 @@ fn main() {
         })
         .add_plugins(TiledPlugin::default())
         .add_systems(Startup, startup)
-        .add_systems(Update, (update_camera_position, toggle_fps))
+        .add_systems(
+            Update,
+            (update_camera_position, toggle_fps, toggle_fullscreen),
+        )
         .insert_resource(Gravity::ZERO)
         .add_plugins(TiledPhysicsPlugin::<TiledPhysicsAvianBackend>::default())
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
@@ -113,5 +117,20 @@ fn toggle_fps(
         let enabled = !fps_overlay.enabled;
         fps_overlay.enabled = enabled;
         fps_overlay.frame_time_graph_config.enabled = enabled;
+    }
+}
+
+fn toggle_fullscreen(
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    mut window: Single<&mut Window, With<window::PrimaryWindow>>,
+) {
+    if keyboard_input.just_pressed(KeyCode::KeyF) {
+        let new_mode = match window.mode {
+            window::WindowMode::Windowed => {
+                window::WindowMode::BorderlessFullscreen(MonitorSelection::Current)
+            }
+            _ => window::WindowMode::Windowed,
+        };
+        window.mode = new_mode;
     }
 }
