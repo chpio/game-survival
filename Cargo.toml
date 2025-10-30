@@ -5,11 +5,69 @@ edition = "2024"
 
 [dependencies]
 avian2d = "0.4"
-bevy = { version = "0.17", default-features = true, features = [
+
+[dependencies.bevy]
+version = "0.17"
+default-features = false
+features = [
     "dynamic_linking",
     "file_watcher",
-] }
-#bevy_ecs_tiled = { version = "0.9", features = ["avian"] }
+
+    # default features https://docs.rs/bevy/0.17.2/bevy/index.html#default-features
+    "std",
+    "async_executor",
+    # "android-game-activity",
+    # "android_shared_stdcxx",
+    # "animation",
+    "bevy_asset",
+    # "bevy_audio",
+    # "bevy_color",
+    "bevy_core_pipeline",
+    # "bevy_post_process",
+    # "bevy_anti_alias",
+    # "bevy_gilrs",
+    # "bevy_gizmos",
+    # "bevy_gltf",
+    # "bevy_input_focus",
+    "bevy_log",
+    # "bevy_mesh_picking_backend",
+    # "bevy_pbr",
+    # "bevy_picking",
+    "bevy_render",
+    # "bevy_scene",
+    "bevy_image",
+    # "bevy_mesh",
+    "bevy_camera",
+    # "bevy_light",
+    # "bevy_shader",
+    "bevy_sprite",
+    "bevy_sprite_picking_backend",
+    "bevy_sprite_render",
+    "bevy_state",
+    # "bevy_text",
+    # "bevy_ui",
+    # "bevy_ui_picking_backend",
+    # "bevy_ui_render",
+    "bevy_window",
+    "bevy_winit",
+    # "custom_cursor",
+    # "default_font",
+    # "hdr",
+    # "ktx2",
+    "multi_threaded",
+    "png",
+    # "reflect_auto_register",
+    # "smaa_luts",
+    "sysinfo_plugin",
+    # "tonemapping_luts",
+    # "vorbis",
+    # "webgl2",
+    "x11",
+    "wayland",
+    "debug",
+    # "zstd_rust",
+]
+
 [dependencies.bevy_ecs_tiled]
 git = "https://github.com/adrien-bon/bevy_ecs_tiled.git"
 branch = "dev"
