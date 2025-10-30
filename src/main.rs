@@ -1,5 +1,5 @@
 use avian2d::prelude::*;
-use bevy::{dev_tools::fps_overlay, prelude::*};
+use bevy::{dev_tools::fps_overlay, prelude::*, window::PresentMode};
 use bevy_ecs_tiled::prelude::*;
 use std::time::Duration;
 
@@ -7,7 +7,18 @@ mod objects;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins.build().set(ImagePlugin::default_nearest()))
+        .add_plugins(
+            DefaultPlugins
+                .build()
+                .set(WindowPlugin {
+                    primary_window: Some(Window {
+                        present_mode: PresentMode::Fifo,
+                        ..default()
+                    }),
+                    ..default()
+                })
+                .set(ImagePlugin::default_nearest()),
+        )
         .add_plugins(fps_overlay::FpsOverlayPlugin {
             config: fps_overlay::FpsOverlayConfig {
                 refresh_interval: Duration::from_millis(500),
