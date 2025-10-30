@@ -103,7 +103,14 @@ fn startup(mut commands: Commands, asset_server: Res<AssetServer>) {
 }
 
 fn update_camera_position(
-    player: Single<&Transform, (With<objects::player::Player>, Without<Camera>)>,
+    player: Single<
+        &Transform,
+        (
+            Changed<Transform>,
+            With<objects::player::Player>,
+            Without<Camera>,
+        ),
+    >,
     mut camera: Single<&mut Transform, With<Camera>>,
 ) {
     // keep camera z-coordinate unchanged

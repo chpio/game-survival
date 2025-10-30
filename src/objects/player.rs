@@ -28,7 +28,10 @@ fn move_player(
         direction += Vec2::new(0.0, -1.0);
     }
 
-    player_vel.0 = direction.normalize_or_zero() * MOVE_SPEED;
+    let new_vel = direction.normalize_or_zero() * MOVE_SPEED;
+    if player_vel.0 != new_vel {
+        player_vel.0 = new_vel;
+    }
 }
 
 pub struct Plugin;
