@@ -74,10 +74,10 @@ fn startup(mut commands: Commands, asset_server: Res<AssetServer>) {
             |collider_created: On<TiledEvent<ColliderCreated>>,
              mut commands: Commands,
              assets: Res<Assets<TiledMapAsset>>| {
+                let mut collider = commands.entity(collider_created.event().origin);
+
                 // Automatically insert a `RigidBody::Static` component on all the colliders entities from the map
-                commands
-                    .entity(*collider_created.event().event.collider_of)
-                    .insert(RigidBody::Static);
+                collider.insert(RigidBody::Static);
 
                 if let Some(obj) = collider_created.event().get_object(&assets) {
                     let user_type = Some(obj.user_type.clone())
@@ -88,8 +88,6 @@ fn startup(mut commands: Commands, asset_server: Res<AssetServer>) {
                                 .and_then(|tile| tile.user_type.clone())
                                 .filter(|t| !t.is_empty())
                         });
-
-                    let mut collider = commands.entity(collider_created.event().origin);
 
                     match user_type.as_ref().map(String::as_str) {
                         Some("well") => {
